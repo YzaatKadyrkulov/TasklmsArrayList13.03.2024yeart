@@ -43,14 +43,25 @@ public class ReaderServiceImpl implements ReaderService {
 
     @Override
     public void assignReaderToLibrary(Long readerId, Long libraryId) {
+        Reader targetReader = null;
+        Library targetLibrary = null;
         for (Reader reader : Database.readers) {
-            if (reader.getId() == readerId) {
-                for (Library library : Database.libraries) {
-                    if (library.getId() == libraryId) {
-                        Database.libraries.add(library);
-                    }
-                }
+            if (reader.getId() == (readerId)) {
+                targetReader = reader;
+                break;
             }
+        }
+
+        for (Library library : Database.libraries) {
+            if (library.getId().equals(libraryId)) {
+                targetLibrary = library;
+                break;
+            }
+        }
+        if (targetReader != null && targetLibrary != null) {
+            targetLibrary.getReaders().add(targetReader);
+        } else {
+            System.out.println("Читатель или библиотека не найдены.");
         }
     }
 }

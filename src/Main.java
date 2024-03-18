@@ -49,6 +49,7 @@
 import enums.Gender;
 import enums.Genre;
 import models.Book;
+import models.Database;
 import models.Library;
 import models.Reader;
 import service.LibraryService;
@@ -84,19 +85,20 @@ import java.util.Scanner;
 
                 while (true) {
                     System.out.println("""
-                    1. Book
-                    2. Library
-                    3. Reader
-                    """);
+                            1. Book
+                            2. Library
+                            3. Reader
+                            4.Exit
+                            """);
                     switch (scannerLong.nextInt()) {
                         case 1 -> {
                             System.out.println("""
-                            1. saveBook
-                            2. getAllBooks
-                            3. getBookById
-                            4. deleteBook
-                            5. clearBooksByLibraryId
-                            """);
+                                    1. saveBook
+                                    2. getAllBooks
+                                    3. getBookById  
+                                    4. deleteBook
+                                    5. clearBooksByLibraryId
+                                    """);
                             String choice = scannerString.nextLine();
                             switch (choice) {
                                 case "1", "saveBook" -> {
@@ -131,13 +133,13 @@ import java.util.Scanner;
                         case 2 -> {
                             while (true) {
                                 System.out.println("""
-                                1. saveLibrary
-                                2. getAllLibraries
-                                3. getLibraryById
-                                4. updateLibrary
-                                5. deleteLibrary
-                                6. Exit
-                                """);
+                                        1. saveLibrary
+                                        2. getAllLibraries
+                                        3. getLibraryById
+                                        4. updateLibrary
+                                        5. deleteLibrary
+                                        6. Exit
+                                        """);
                                 int command = scannerLong.nextInt();
                                 switch (command) {
                                     case 1 -> {
@@ -181,73 +183,80 @@ import java.util.Scanner;
                             }
                         }
                         case 3 -> {
-                            while (true) {
+                            boolean exit = false;
+                            while (!exit) {
                                 System.out.println("""
-                                1. saveReader
-                                2. getAllReaders
-                                3. getReaderById
-                                4. updateReader
-                                5. assignReaderToLibrary
-                                6. Exit
-                                """);
-                                int choice = scannerLong.nextInt();
-                                switch (choice) {
-                                    case 1 -> {
-                                        System.out.println("Write a reader of id: ");
-                                        reader.setId(scannerLong.nextLong());
-                                        System.out.println("Write a reader of name: ");
-                                        reader.setFullname(scannerString.nextLine());
-                                        System.out.println("Write a reader of email: ");
-                                        reader.setEmail(scannerString.nextLine());
-                                        System.out.println("Write a reader of phone number: ");
-                                        reader.setPhoneNumber(scannerLong.nextLong());
-                                        System.out.println("Write one Gender : MALE/FEMALE");
-                                        if (scannerString.nextLine().equalsIgnoreCase("MALE")) {
-                                            reader.setGender(Gender.MALE);
-                                        } else if (scannerString.nextLine().equalsIgnoreCase("FEMALE")) {
-                                            reader.setGender(Gender.FEMALE);
+                                        1. saveReader
+                                        2. getAllReaders
+                                        3. getReaderById
+                                        4. updateReader
+                                        5. assignReaderToLibrary
+                                        6. Exit
+                                        """);
+                                    int choice = scannerLong.nextInt();
+                                    switch (choice) {
+                                        case 1 -> {
+                                            System.out.println("Write a reader of id: ");
+                                            reader.setId(scannerLong.nextLong());
+                                            System.out.println("Write a reader of name: ");
+                                            reader.setFullname(scannerString.nextLine());
+                                            System.out.println("Write a reader of email: ");
+                                            reader.setEmail(scannerString.nextLine());
+                                            System.out.println("Write a reader of phone number: ");
+                                            reader.setPhoneNumber(scannerLong.nextLong());
+                                            System.out.println("Write one Gender : MALE/FEMALE");
+                                            if (scannerString.nextLine().equalsIgnoreCase("MALE")) {
+                                                reader.setGender(Gender.MALE);
+                                            } else if (scannerString.nextLine().equalsIgnoreCase("FEMALE")) {
+                                                reader.setGender(Gender.FEMALE);
+                                            }
+                                            readerService.saveReader(reader);
                                         }
-                                        readerService.saveReader(reader);
-                                    }
-                                    case 2 -> {
-                                        System.out.println(readerService.getAllReaders());
-                                    }
-                                    case 3 -> {
-                                        System.out.println("Enter a reader by id: ");
-                                        System.out.println(readerService.getReaderById(scannerLong.nextLong()));
-                                    }
-                                    case 4 -> {
-                                        System.out.println("Write a reader id to change on new: ");
-                                        long readerId = scannerLong.nextLong();
-                                        System.out.println("Write a new reader of id : ");
-                                        reader.setId(scannerLong.nextLong());
-                                        System.out.println("Write a full name of reader: ");
-                                        reader.setFullname(scannerString.nextLine());
-                                        System.out.println("Write a new email of reader: ");
-                                        reader.setEmail(scannerString.nextLine());
-                                        System.out.println("Write a new phone of email ");
-                                        reader.setPhoneNumber(scannerLong.nextLong());
-                                        System.out.println("Write a new gender of gender to change: ");
-                                        if (scannerString.nextLine().equalsIgnoreCase("MALE")) {
-                                            reader.setGender(Gender.MALE);
-                                        } else if (scannerString.nextLine().equalsIgnoreCase("FEMALE")) {
-                                            reader.setGender(Gender.FEMALE);
+                                        case 2 -> {
+                                            System.out.println(readerService.getAllReaders());
                                         }
-                                        System.out.println(readerService.updateReader(readerId, reader));
-                                    }
-                                    case 5 -> {
-                                        System.out.println("1Enter a reader of id and 2a library of id");
-                                        readerService.assignReaderToLibrary(scannerLong.nextLong(), scannerLong.nextLong());
-                                    }
-                                    default -> {
-                                        System.out.println("Write correct...");
-                                        return;
+                                        case 3 -> {
+                                            System.out.println("Enter a reader by id: ");
+                                            System.out.println(readerService.getReaderById(scannerLong.nextLong()));
+                                        }
+                                        case 4 -> {
+                                            System.out.println("Write a reader id to change on new: ");
+                                            long readerId = scannerLong.nextLong();
+                                            System.out.println("Write a new reader of id : ");
+                                            reader.setId(scannerLong.nextLong());
+                                            System.out.println("Write a full name of reader: ");
+                                            reader.setFullname(scannerString.nextLine());
+                                            System.out.println("Write a new email of reader: ");
+                                            reader.setEmail(scannerString.nextLine());
+                                            System.out.println("Write a new phone of email ");
+                                            reader.setPhoneNumber(scannerLong.nextLong());
+                                            System.out.println("Write a new gender of gender to change: ");
+                                            if (scannerString.nextLine().equalsIgnoreCase("MALE")) {
+                                                reader.setGender(Gender.MALE);
+                                            } else if (scannerString.nextLine().equalsIgnoreCase("FEMALE")) {
+                                                reader.setGender(Gender.FEMALE);
+                                            }
+                                            System.out.println(readerService.updateReader(readerId, reader));
+                                        }
+                                        case 5 -> {
+                                            System.out.println("1Enter a reader of id and 2a library of id");
+                                            readerService.assignReaderToLibrary(scannerLong.nextLong(), scannerLong.nextLong());
+                                        }
+                                        case 6 -> {
+                                            System.out.println("Going back...");
+                                            exit = true;
+
+                                        }
                                     }
                                 }
                             }
+                        case 4 ->{
+                            System.exit(0);
                         }
+
+                    }
                     }
                 }
             }
-        }
+
 

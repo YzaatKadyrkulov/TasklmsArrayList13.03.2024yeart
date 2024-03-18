@@ -1,14 +1,15 @@
 package models;
 
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Library {
     private Long id;
     private String name;
     private String address;
-    private List<Book> books;
-    private List<Reader>readers;
+    private List<Book> books = new ArrayList<>();
+    private List<Reader>readers = new ArrayList<>();
 
     public Library() {
     }
@@ -67,8 +68,8 @@ public class Library {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", books=" + books +
-                ", readers=" + readers +
+                ", \nbooks=" + books +
+                ", \nreaders=" + readers +
                 '}';
     }
 }

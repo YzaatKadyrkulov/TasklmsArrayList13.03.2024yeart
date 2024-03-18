@@ -2,7 +2,9 @@ package models;
 
 import enums.Gender;
 
-public class Reader {
+import java.io.IOException;
+
+public class Reader extends java.io.Reader {
     private long id;
     private String fullname;
     private String email;
@@ -11,6 +13,17 @@ public class Reader {
 
     public Reader() {
     }
+
+    @Override
+    public int read(char[] cbuf, int off, int len) throws IOException {
+        return 0;
+    }
+
+    @Override
+    public void close() throws IOException {
+
+    }
+
 
     public Reader(long id, String fullname, String email, long phoneNumber, Gender gender) {
         this.id = id;
@@ -71,3 +84,7 @@ public class Reader {
                 '}';
     }
 }
+
+
+
+

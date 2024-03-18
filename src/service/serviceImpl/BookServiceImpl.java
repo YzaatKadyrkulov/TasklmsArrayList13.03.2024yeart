@@ -13,8 +13,12 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
     @Override
     public List<Book> saveBook(Long libraryId, Book book) {
-        Database.books.add(book);
-        return Database.books;
+      for(Library library : Database.libraries){
+          if(library.getId().equals(libraryId)){
+              library.getBooks().add(book);
+          }
+      }
+      return null;
     }
 
 
